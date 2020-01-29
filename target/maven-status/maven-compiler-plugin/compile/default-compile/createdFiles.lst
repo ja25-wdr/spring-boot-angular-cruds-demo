@@ -1,0 +1,17 @@
+org/aj/stories/cruds/application/repositories/StoryRepository.class
+org/aj/web/models/WebSiteStory.class
+org/aj/stories/cruds/application/entities/Story.class
+org/aj/web/config/MvcConfig.class
+org/aj/stories/cruds/application/entities/QStory.class
+org/aj/web/controllers/SaveImageBeforeSavingEntity.class
+org/aj/web/SpringDataRestApplication.class
+org/aj/stories/cruds/application/controllers/StoryController.class
+org/aj/web/config/RestConfig.class
+org/aj/web/config/H2Config.class
+org/aj/web/validators/WebSiteStoryValidator.class
+org/aj/web/handlers/RestResponseEntityExceptionHandler.class
+org/aj/web/config/ValidatorEventRegister.class
+org/aj/stories/cruds/application/Application.class
+org/aj/web/config/DbConfig.class
+org/aj/web/models/QWebSiteStory.class
+org/aj/web/repositories/StoryRepository.class
