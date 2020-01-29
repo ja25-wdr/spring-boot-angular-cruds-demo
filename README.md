@@ -1,6 +1,9 @@
 # stories
 Story Cruds with Angular and Spring Boot and Story downloadble as an image
 
+To Run it :
+mvn: spring-boot:run
+
 Main Page : 
 http://localhost:8080/stories.html
 H2 DB :
