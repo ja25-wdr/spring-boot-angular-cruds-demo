@@ -1,5 +1,7 @@
-/.idea/
-/target/
-/.idea/*
-/target/*
+.idea/
+target/
+target/classes
+.idea/*
+target/*
 stories.iml
+*.class
