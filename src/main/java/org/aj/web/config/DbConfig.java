@@ -16,7 +16,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "org.aj.web.repositories")
-@PropertySource("persistence-h2.properties")
+//@PropertySource("persistence-h2.properties")
 // @PropertySource("persistence-hsqldb.properties")
 // @PropertySource("persistence-derby.properties")
 // @PropertySource("persistence-sqlite.properties")
