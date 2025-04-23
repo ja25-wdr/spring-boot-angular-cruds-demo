@@ -1,5 +1,6 @@
-# stories
-Story Cruds with Angular and Spring Boot and Story downloadble as an image
+# Spring Boot, Angular CRUDS App
+
+Cruds with Angular and Spring Boot and Story downloadble as an image
 
 To Run it :
 mvn: spring-boot:run
