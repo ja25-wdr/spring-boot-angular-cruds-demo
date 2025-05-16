@@ -28,18 +28,18 @@ public class BlogController {
     }
 
     @GetMapping("/blogs")
-    public Page<Blog> findAllStories(Pageable pageable) {
+    public Page<Blog> findAllBlogs(Pageable pageable) {
         return blogRepository.findAll(pageable);
     }
 
     @GetMapping("/sortedblogs")
-    public Page<Blog> findAllStoriesSortedByTitle() {
+    public Page<Blog> findAllBlogsSortedByTitle() {
         Pageable pageable = PageRequest.of(0, 5, Sort.by("title"));
         return blogRepository.findAll(pageable);
     }
 
     @GetMapping("/filteredblogs")
-    public Iterable<Blog> getStoriesByQuerydslPredicate(@QuerydslPredicate(root = Blog.class) Predicate predicate) {
+    public Iterable<Blog> getBlogsByQuerydslPredicate(@QuerydslPredicate(root = Blog.class) Predicate predicate) {
         return blogRepository.findAll(predicate);
     }
 
