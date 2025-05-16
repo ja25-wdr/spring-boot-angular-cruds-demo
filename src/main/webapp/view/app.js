@@ -1,50 +1,50 @@
 var app = angular.module('app',[]);
 
-app.controller('StoryCRUDCtrl', ['$scope','StoryCRUDService', function ($scope,StoryCRUDService) {
+app.controller('BlogCRUDCtrl', ['$scope','BlogCRUDService', function ($scope,BlogCRUDService) {
 
-    $scope.updateStory = function () {
-        StoryCRUDService.updateStory($scope.story.id,$scope.story.title,$scope.story.contents)
+    $scope.updateBlog = function () {
+        BlogCRUDService.updateBlog($scope.blog.id,$scope.blog.title,$scope.blog.contents)
           .then(function success(response){
-              $scope.message = 'Story data updated!';
+              $scope.message = 'Blog data updated!';
               $scope.errorMessage = '';
           },
           function error(response){
-              $scope.errorMessage = 'Error updating story!';
+              $scope.errorMessage = 'Error updating blog!';
               $scope.message = '';
           });
-          $scope.stories = null;
+          $scope.blogs = null;
     }
     
-    $scope.getStory = function () {
-        var id = $scope.story.id;
-        StoryCRUDService.getStory($scope.story.id)
+    $scope.getBlog = function () {
+        var id = $scope.blog.id;
+        BlogCRUDService.getBlog($scope.blog.id)
           .then(function success(response){
-              $scope.story = response.data;
-              $scope.story.id = id;
+              $scope.blog = response.data;
+              $scope.blog.id = id;
               $scope.message='';
               $scope.errorMessage = '';
           },
           function error (response ){
               $scope.message = '';
               if (response.status === 404){
-                  $scope.errorMessage = 'Story not found!';
+                  $scope.errorMessage = 'Blog not found!';
               }
               else {
-                  $scope.errorMessage = "Error getting story!";
+                  $scope.errorMessage = "Error getting blog!";
               }
           });
-          $scope.stories = null;
+          $scope.blogs = null;
     }
     
-    $scope.addStory = function () {
-        if ($scope.story != null && $scope.story.title && $scope.story.contents) {
-            StoryCRUDService.addStory($scope.story.title, $scope.story.contents)
+    $scope.addBlog = function () {
+        if ($scope.blog != null && $scope.blog.title && $scope.blog.contents) {
+            BlogCRUDService.addBlog($scope.blog.title, $scope.blog.contents)
               .then (function success(response){
-                  $scope.message = 'Story added!';
+                  $scope.message = 'Blog added!';
                   $scope.errorMessage = '';
               },
               function error(response){
-                  $scope.errorMessage = 'Error adding story!';
+                  $scope.errorMessage = 'Error adding blog!';
                   $scope.message = '';
             });
         }
@@ -52,33 +52,33 @@ app.controller('StoryCRUDCtrl', ['$scope','StoryCRUDService', function ($scope,S
             $scope.errorMessage = 'Please enter a name!';
             $scope.message = '';
         }
-        $scope.stories = null;
+        $scope.blogs = null;
     }
     
-    $scope.deleteStory = function () {
-        StoryCRUDService.deleteStory($scope.story.id)
+    $scope.deleteBlog = function () {
+        BlogCRUDService.deleteBlog($scope.blog.id)
           .then (function success(response){
-              $scope.message = 'Story deleted!';
-              $scope.story = null;
+              $scope.message = 'Blog deleted!';
+              $scope.blog = null;
               $scope.errorMessage='';
           },
           function error(response){
-              $scope.errorMessage = 'Error deleting story!';
+              $scope.errorMessage = 'Error deleting blog!';
               $scope.message='';
           })
-          $scope.stories = null;
+          $scope.blogs = null;
     }
     
-    $scope.getAllStories = function () {
-        StoryCRUDService.getAllStories()
+    $scope.getAllBlogs = function () {
+        BlogCRUDService.getAllBlogs()
           .then(function success(response){
-              $scope.stories = response.data._embedded.stories;
+              $scope.blogs = response.data._embedded.blogs;
               $scope.message='';
               $scope.errorMessage = '';
           },
           function error (response ){
               $scope.message='';
-              $scope.errorMessage = 'Error getting stories!';
+              $scope.errorMessage = 'Error getting blogs!';
           });
     }
 
@@ -91,42 +91,42 @@ app.controller('StoryCRUDCtrl', ['$scope','StoryCRUDService', function ($scope,S
 
 }]);
 
-app.service('StoryCRUDService',['$http', function ($http) {
+app.service('BlogCRUDService',['$http', function ($http) {
 	
-    this.getStory = function getStory(storyId){
+    this.getBlog = function getBlog(blogId){
         return $http({
           method: 'GET',
-          url: 'stories/'+storyId
+          url: 'blogs/'+blogId
         });
 	}
 	
-    this.addStory = function addStory(title, contents){
+    this.addBlog = function addBlog(title, contents){
         return $http({
           method: 'POST',
-          url: 'stories',
+          url: 'blogs',
           data: {title:title, contents:contents}
         });
     }
 	
-    this.deleteStory = function deleteStory(id){
+    this.deleteBlog = function deleteBlog(id){
         return $http({
           method: 'DELETE',
-          url: 'stories/'+id
+          url: 'blogs/'+id
         })
     }
 	
-    this.updateStory = function updateStory(id,title,contents){
+    this.updateBlog = function updateBlog(id,title,contents){
         return $http({
           method: 'PATCH',
-          url: 'stories/'+id,
+          url: 'blogs/'+id,
           data: {title:title, contents:contents}
         })
     }
 	
-    this.getAllStories = function getAllStories(){
+    this.getAllBlogs = function getAllBlogs(){
         return $http({
           method: 'GET',
-          url: 'stories'
+          url: 'blogs'
         });
     }
 

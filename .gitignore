@@ -3,5 +3,6 @@ target/
 target/classes
 .idea/*
 target/*
-stories.iml
+blogs.iml
 *.class
+.vscode/

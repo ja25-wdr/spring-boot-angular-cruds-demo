@@ -1,17 +1,14 @@
 package org.aj.tests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.aj.web.SpringDataRestApplication;
-import org.aj.web.models.WebSiteStory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -20,7 +17,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-@RunWith(SpringRunner.class)
+import org.ja.web.SpringDataRestApplication;
+import org.ja.web.models.WebSiteBlog;
+
 @SpringBootTest(classes = SpringDataRestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 public class SpringDataRestValidatorIntegrationTest {
@@ -30,83 +29,83 @@ public class SpringDataRestValidatorIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Before
+    @BeforeEach
     public void setup() {
         mockMvc = webAppContextSetup(wac).build();
     }
 
     @Test
     public void whenStartingApplication_thenCorrectStatusCode() throws Exception {
-        mockMvc.perform(get("/stories")).andExpect(status().is2xxSuccessful());
+        mockMvc.perform(get("/blogs")).andExpect(status().is2xxSuccessful());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-    public void whenAddingNewCorrectStory_thenCorrectStatusCodeAndResponse() throws Exception {
-        WebSiteStory story = new WebSiteStory();
-        story.setTitle("AJ Title 1");
-        story.setContents("Amit John Story Contents");
+    public void whenAddingNewCorrectBlog_thenCorrectStatusCodeAndResponse() throws Exception {
+        WebSiteBlog blog = new WebSiteBlog();
+        blog.setTitle("AJ Title 1");
+        blog.setContents("Amit John Blog Contents");
 
-        mockMvc.perform(post("/stories", story).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(story))).andExpect(status().is2xxSuccessful()).andExpect(redirectedUrl("http://localhost/stories/1"));
+        mockMvc.perform(post("/blogs", blog).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(blog))).andExpect(status().is2xxSuccessful()).andExpect(redirectedUrl("http://localhost/blogs/1"));
     }
 
     @Test
     public void whenAddingNewUserWithoutTitle_thenErrorStatusCodeAndResponse() throws Exception {
-        WebSiteStory user = new WebSiteStory();
+        WebSiteBlog user = new WebSiteBlog();
 
 
-        mockMvc.perform(post("/stories", user).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(user))).andExpect(status().isNotAcceptable()).andExpect(redirectedUrl(null));
+        mockMvc.perform(post("/blogs", user).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(user))).andExpect(status().isNotAcceptable()).andExpect(redirectedUrl(null));
     }
 
     @Test
     public void whenAddingNewUserWithEmptyContents_thenErrorStatusCodeAndResponse() throws Exception {
-        WebSiteStory story = new WebSiteStory();
-        story.setTitle("AJ Title 1");
-        mockMvc.perform(post("/stories", story).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(story))).andExpect(status().isNotAcceptable()).andExpect(redirectedUrl(null));
+        WebSiteBlog blog = new WebSiteBlog();
+        blog.setTitle("AJ Title 1");
+        mockMvc.perform(post("/blogs", blog).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(blog))).andExpect(status().isNotAcceptable()).andExpect(redirectedUrl(null));
     }
 
     @Test
-    public void whenAddingNewStoryWithoutTitle_thenErrorStatusCodeAndResponse() throws Exception {
-        WebSiteStory story = new WebSiteStory();
-        story.setContents("Contents 1");
+    public void whenAddingNewBlogWithoutTitle_thenErrorStatusCodeAndResponse() throws Exception {
+        WebSiteBlog blog = new WebSiteBlog();
+        blog.setContents("Contents 1");
 
-        mockMvc.perform(post("/stories", story).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(story))).andExpect(status().isNotAcceptable()).andExpect(redirectedUrl(null));
+        mockMvc.perform(post("/blogs", blog).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(blog))).andExpect(status().isNotAcceptable()).andExpect(redirectedUrl(null));
     }
 
     @Test
-    public void whenAddingNewStoryWithEmptyTitle_thenErrorStatusCodeAndResponse() throws Exception {
-        WebSiteStory story = new WebSiteStory();
-        story.setTitle("");
-        story.setContents("Contents 1");
-        mockMvc.perform(post("/stories", story).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(story))).andExpect(status().isNotAcceptable()).andExpect(redirectedUrl(null));
+    public void whenAddingNewBlogWithEmptyTitle_thenErrorStatusCodeAndResponse() throws Exception {
+        WebSiteBlog blog = new WebSiteBlog();
+        blog.setTitle("");
+        blog.setContents("Contents 1");
+        mockMvc.perform(post("/blogs", blog).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(blog))).andExpect(status().isNotAcceptable()).andExpect(redirectedUrl(null));
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-    public void whenDeletingCorrectStory_thenCorrectStatusCodeAndResponse() throws Exception {
-        WebSiteStory story = new WebSiteStory();
-        story.setTitle("AJ Title 1");
-        story.setContents("Amit John Story Contents");
-        mockMvc.perform(post("/stories", story).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(story))).andExpect(status().is2xxSuccessful()).andExpect(redirectedUrl("http://localhost/stories/1"));
-        mockMvc.perform(delete("/stories/1").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(story))).andExpect(status().is2xxSuccessful());
+    public void whenDeletingCorrectBlog_thenCorrectStatusCodeAndResponse() throws Exception {
+        WebSiteBlog blog = new WebSiteBlog();
+        blog.setTitle("AJ Title 1");
+        blog.setContents("Amit John Blog Contents");
+        mockMvc.perform(post("/blogs", blog).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(blog))).andExpect(status().is2xxSuccessful()).andExpect(redirectedUrl("http://localhost/blogs/1"));
+        mockMvc.perform(delete("/blogs/1").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(blog))).andExpect(status().is2xxSuccessful());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void whenSearchingByTitle_thenCorrectStatusCodeAndResponse() throws Exception {
-        WebSiteStory story = new WebSiteStory();
-        story.setTitle("AJ Title 1");
-        story.setContents("Amit John Story Contents");
-        mockMvc.perform(post("/stories", story).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(story))).andExpect(status().is2xxSuccessful()).andExpect(redirectedUrl("http://localhost/stories/1"));
-        mockMvc.perform(get("/stories/search/byTitle").param("title", story.getTitle()).contentType(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful());
+        WebSiteBlog blog = new WebSiteBlog();
+        blog.setTitle("AJ Title 1");
+        blog.setContents("Amit John Blog Contents");
+        mockMvc.perform(post("/blogs", blog).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(blog))).andExpect(status().is2xxSuccessful()).andExpect(redirectedUrl("http://localhost/blogs/1"));
+        mockMvc.perform(get("/blogs/search/byTitle").param("title", blog.getTitle()).contentType(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful());
     }
 
     @Test
     public void whenSearchingByTitleWithOriginalMethodName_thenErrorStatusCodeAndResponse() throws Exception {
-        WebSiteStory story = new WebSiteStory();
-        story.setTitle("AJ Title 1");
-        story.setContents("Amit John Story Contents");
-//        mockMvc.perform(post("/stories", story).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(story))).andExpect(status().is2xxSuccessful()).andExpect(redirectedUrl("http://localhost/stories/1"));
-        mockMvc.perform(get("/stories/search/findByTitle").param("title", story.getTitle()).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+        WebSiteBlog blog = new WebSiteBlog();
+        blog.setTitle("AJ Title 1");
+        blog.setContents("Amit John Blog Contents");
+//        mockMvc.perform(post("/blogs", blog).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(blog))).andExpect(status().is2xxSuccessful()).andExpect(redirectedUrl("http://localhost/blogs/1"));
+        mockMvc.perform(get("/blogs/search/findByTitle").param("title", blog.getTitle()).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
     }
 }

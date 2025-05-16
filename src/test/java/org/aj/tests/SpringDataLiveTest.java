@@ -2,51 +2,50 @@ package org.aj.tests;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.aj.web.SpringDataRestApplication;
-import org.aj.web.models.WebSiteStory;
-import org.aj.web.repositories.StoryRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringRunner.class)
+import org.ja.web.SpringDataRestApplication;
+import org.ja.web.models.WebSiteBlog;
+import org.ja.web.repositories.BlogRepository;
+
 @SpringBootTest(classes = SpringDataRestApplication.class, webEnvironment = WebEnvironment.DEFINED_PORT)
 
 public class SpringDataLiveTest {
-    private static final String STORY_ENDPOINT = "http://localhost:8080/stories";
+    private static final String STORY_ENDPOINT = "http://localhost:8080/blogs";
 
     @Autowired
-    private StoryRepository storyRepo;
+    private BlogRepository blogRepo;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        if (!storyRepo.findById(1L).isPresent()) {
-            WebSiteStory story = new WebSiteStory();
-            story.setTitle("New Story Title 1");
-            story.setContents("New Story Content 1");
-            story = storyRepo.save(story);
+        if (blogRepo.findById(1L).isEmpty()) {
+            WebSiteBlog blog = new WebSiteBlog();
+            blog.setTitle("New Blog Title 1");
+            blog.setContents("New Blog Content 1");
+            blog = blogRepo.save(blog);
         }
     }
 
     @Test
-    public void whenGetStory_thenOK() {
+    public void whenGetBlog_thenOK() {
         final Response response = RestAssured.get(STORY_ENDPOINT + "/1");
 
         assertEquals(200, response.getStatusCode());
-        assertTrue(response.asString().contains("New Story Title 1"));
-        assertTrue(response.asString().contains("New Story Content 1"));
+        assertTrue(response.asString().contains("New Blog Title 1"));
+        assertTrue(response.asString().contains("New Blog Content 1"));
         // System.out.println(response.asString());
     }
 
 //    @Test
-//    public void whenGetStoryProjection_thenOK() {
+//    public void whenGetBlogProjection_thenOK() {
 //        final Response response = RestAssured.get(BOOK_ENDPOINT + "/1?projection=customBook");
 //
 //        assertEquals(200, response.getStatusCode());
@@ -60,8 +59,8 @@ public class SpringDataLiveTest {
         final Response response = RestAssured.get(STORY_ENDPOINT);
 
         assertEquals(200, response.getStatusCode());
-        assertTrue(response.asString().contains("New Story Title 1"));
-        assertTrue(response.asString().contains("New Story Content 1"));
+        assertTrue(response.asString().contains("New Blog Title 1"));
+        assertTrue(response.asString().contains("New Blog Content 1"));
         // System.out.println(response.asString());
     }
 

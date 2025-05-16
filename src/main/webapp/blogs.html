@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Blog CRUD</title>
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <script src="view/app.js"></script>
+    <style>
+a {
+	cursor: pointer;
+	background-color: lightblue;
+}
+table, th, td {
+  border: 1px solid black;
+  vertical-align: top;
+}
+
+
+    </style>
+</head>
+<body>
+<div ng-controller="BlogCRUDCtrl">
+    <div>
+        <table>
+            <tr>
+                <td width="100">ID:</td>
+                <td><input id="id" ng-model="blog.id" type="text"/></td>
+            </tr>
+            <tr>
+                <td width="100">Title:</td>
+                <td><input id="title" ng-model="blog.title" type="text"/></td>
+            </tr>
+            <tr>
+                <td width="100">Blog:</td>
+                <td><textarea cols="100" id="contents" ng-model="blog.contents" rows="2"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <img ng-show='blog.image != undefined' src='data:image/png;base64, {{blog.image}}'/>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br/> <br/>
+    <a ng-click="getBlog(blog.id)">Get Blog</a>
+    <a ng-click="updateBlog(blog.id,blog.title,blog.contents)">Update Blog</a>
+    <a ng-click="addBlog(blog.title,blog.contents)">Add Blog</a>
+    <a ng-click="deleteBlog(blog.id)">Delete Blog</a>
+
+    <br/> <br/>
+    <p style="color: green">{{message}}</p>
+    <p style="color: red">{{errorMessage}}</p>
+
+    <br/>
+    <br/>
+    <a ng-click="getAllBlogs()">Get Blogs</a><br/>
+    <br/> <br/>
+    <table ng-show="blogs != undefined">
+
+        <tr ng-repeat="blog in blogs">
+            <td width="200px">{{blog.id}}</td>
+
+            <td width="200px">{{blog.title}}</td>
+
+            <td width="300px">{{blog.contents}}</td>
+
+            <td width="400px"><a ng-click='getImageUrl(stori.image)'><img height="100px"
+                                                                          src='data:image/png;base64,{{blog.image}}'
+                                                                          width="100px"/></a></td>
+
+        </tr>
+
+    </table>
+</div>
+</body>
+</html>
